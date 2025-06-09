@@ -35,19 +35,6 @@ func HandleCompute(w http.ResponseWriter, r *http.Request) {
 		maxS, _ := strconv.Atoi(r.FormValue("maxSetup"))
 		minPr, _ := strconv.Atoi(r.FormValue("minProcess"))
 		maxPr, _ := strconv.Atoi(r.FormValue("maxProcess"))
-		bigSl, _ := strconv.Atoi(r.FormValue("bigSlack"))
-
-		// jobs = generator.GenerateTasksWithPolishing(
-		// 	types.GenerateRequest{
-		// 		NumTypes:      T,
-		// 		PiecesPerType: P,
-		// 		MinSetup:      minS,
-		// 		MaxSetup:      maxS,
-		// 		MinProcess:    minPr,
-		// 		MaxProcess:    maxPr,
-		// 		BigSlack:      bigSl,
-		// 	},
-		// )
 
 		// 3) Генерируем до тех пор, пока не пройдёт EDD-проверка
 		for {
@@ -59,7 +46,6 @@ func HandleCompute(w http.ResponseWriter, r *http.Request) {
 					MaxSetup:      maxS,
 					MinProcess:    minPr,
 					MaxProcess:    maxPr,
-					BigSlack:      bigSl,
 				},
 			)
 			if generator.EDDCheck(candidate) {

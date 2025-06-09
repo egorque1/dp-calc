@@ -61,9 +61,6 @@ var TPLIndex = template.Must(
       <label>Max Process:
         <input type="number" name="maxProcess" min="0" value="15" required>
       </label>
-      <label>Big Slack:
-        <input type="number" name="bigSlack" min="0" value="20" required>
-      </label>
 
       <button type="submit">Сгенерировать и решить</button>
     </form>

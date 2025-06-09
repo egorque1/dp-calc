@@ -22,7 +22,6 @@ type GenerateRequest struct {
 	MaxSetup      int `json:"maxSetup"`      // Максимальное время переналадки
 	MinProcess    int `json:"minProcess"`    // Минимальное время обработки
 	MaxProcess    int `json:"maxProcess"`    // Максимальное время обработки
-	BigSlack      int `json:"bigSlack"`      // Большой запас времени для дедлайнов
 }
 
 // Step - cтруктура для хранения шага планировщика для дальнейшего построения графика.

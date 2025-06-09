@@ -53,26 +53,29 @@ func GenerateTasksWithPolishing(req types.GenerateRequest) []types.Job {
 		}
 		completion[i] = currTime
 	}
+	maxCompletion := currTime
 
 	// 5) Назначаем дедлайны = completion + рандом [0..bigSlack] + небольшое смещение по типу [0..typeSlack]
 	//    Сохраняем строго неубывающее свойство дедлайнов (чтобы EDD-проверка гарантированно прошла).
+	maxDeadline := int(float64(maxCompletion) * 1.25) // например, +25%
 	lastDeadline := 0
+
 	for i, idx := range seq {
 		base := completion[i]
 
-		// если base <= lastDeadline, двигаем base вперёд, чтобы дедлайны строго росли
-		if base <= lastDeadline {
-			base = lastDeadline + 1
+		// базовый дедлайн = base + [0..30]
+		slack := rand.Intn(30 + 1)
+		dead := base + slack
+
+		// не опускаемся ниже предыдущего дедлайна (EDD-гарантия)
+		if dead <= lastDeadline {
+			dead = lastDeadline + 1
+		}
+		// не выше глобального ограничения
+		if dead > maxDeadline {
+			dead = maxDeadline
 		}
 
-		// добавляем случайный запас 0..bigSlack
-		sl := rand.Intn(req.BigSlack + 1)
-		// добавляем «случайный сдвиг по типу» (0..typeSlack),
-		// чтобы дедлайны одного типа немного «рассыпались»
-		typeOffset := rand.Intn(5 + 1)
-
-		dead := base + sl + typeOffset
-		// dead := base + sl
 		allJobs[idx].Deadline = dead
 		lastDeadline = dead
 	}
